@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{meta.title}}</title>
+    <meta name="description" content="{{meta.description}}" />
+    <meta name="theme-color" content="#F6F8FA" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{meta.title}}" />
+    <meta property="og:description" content="{{meta.description}}" />
+    <meta property="og:image" content="./og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // .js hides the animated copy until the story reveals it. If the app has not
+      // started within 3 seconds (a script failed), drop .js so all copy shows.
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!document.documentElement.classList.contains('app-ready')) {
+          document.documentElement.classList.remove('js');
+        }
+      }, 3000);
+      // The story always starts at the beginning
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#demo">{{nav.cta}}</a>
+
+    <header class="topbar">
+      <a class="topbar__logo logo" href="#intro" aria-label="LOCI, back to the start">
+        <span aria-hidden="true">L</span><span class="logo__o" aria-hidden="true"></span><span aria-hidden="true">CI</span>
+      </a>
+      <nav class="topbar__nav" aria-label="Chapters">
+        <ol>
+          <li><a class="mono" href="#intro" data-chapter="intro">{{nav.chapters.0.label}}</a></li>
+          <li><a class="mono" href="#idea" data-chapter="idea">{{nav.chapters.1.label}}</a></li>
+          <li><a class="mono" href="#worlds" data-chapter="worlds">{{nav.chapters.2.label}}</a></li>
+          <li><a class="mono" href="#loci" data-chapter="loci">{{nav.chapters.3.label}}</a></li>
+          <li><a class="mono" href="#demo" data-chapter="demo">{{nav.chapters.4.label}}</a></li>
+        </ol>
+      </nav>
+      <a class="topbar__cta pill glass mono" href="#demo" data-magnetic>{{nav.cta}}</a>
+    </header>
+
+    <main id="main">
+      <section class="chapter" id="intro" data-chapter="intro" aria-labelledby="intro-title">
+        <div class="intro__copy">
+          <h1 id="intro-title" class="intro__headline"><span class="intro__line">{{intro.headline.line1}}</span> <span class="intro__line intro__accent">{{intro.headline.line2}}</span></h1>
+          <p class="sub intro__sub">{{intro.subline}}</p>
+        </div>
+        <p class="mono intro__cue">{{intro.cue}}</p>
+      </section>
+
+      <section class="chapter arc" id="idea" data-chapter="idea" aria-label="The idea">
+        <div class="arc__beats">
+          <p class="arc__beat">{{arc.beats.0}}</p>
+          <p class="arc__beat">{{arc.beats.1}}</p>
+          <p class="arc__beat">{{arc.beats.2}}</p>
+        </div>
+        <p class="arc__caption">
+          <span class="arc__lead">{{arc.captionLead}}</span>
+          <span class="arc__word-wrap" aria-hidden="true"><span class="arc__word">{{arc.captionWords.0}}</span></span>
+          <span class="arc__all visually-hidden"></span>
+        </p>
+      </section>
+
+      <section class="chapter worlds" id="worlds" data-chapter="worlds" aria-labelledby="worlds-title">
+        <div class="worlds__copy">
+          <h2 id="worlds-title" class="worlds__intro">{{worlds.intro}}</h2>
+          <ol class="worlds__steps">
+            <li class="worlds__step">
+              <h3 class="mono worlds__title">{{worlds.steps.0.number}} · {{worlds.steps.0.title}}</h3>
+              <p class="worlds__text">{{worlds.steps.0.text}}</p>
+            </li>
+            <li class="worlds__step">
+              <h3 class="mono worlds__title">{{worlds.steps.1.number}} · {{worlds.steps.1.title}}</h3>
+              <p class="worlds__text">{{worlds.steps.1.text}}</p>
+            </li>
+            <li class="worlds__step">
+              <h3 class="mono worlds__title">{{worlds.steps.2.number}} · {{worlds.steps.2.title}}</h3>
+              <p class="worlds__text">{{worlds.steps.2.text}}</p>
+            </li>
+          </ol>
+        </div>
+        <ul class="worlds__pills" aria-hidden="true">
+          <li class="pill glass mono">{{worlds.steps.0.pill}}</li>
+          <li class="pill glass mono">{{worlds.steps.1.pill}}</li>
+          <li class="pill glass mono">{{worlds.steps.2.pill}}</li>
+        </ul>
+      </section>
+
+      <section class="chapter surprise" id="loci" data-chapter="loci" aria-labelledby="loci-title">
+        <div class="surprise__inner">
+          <h2 id="loci-title" class="surprise__statement">{{surprise.statement}}</h2>
+          <p class="surprise__support">{{surprise.support}}</p>
+        </div>
+      </section>
+
+      <section class="demo" id="demo" data-chapter="demo" aria-labelledby="demo-title">
+        <header class="demo__head">
+          <h2 id="demo-title" class="demo__headline">{{demo.headline}}</h2>
+          <p class="sub demo__sub">{{demo.subline}}</p>
+        </header>
+
+        <form class="brief" id="brief" action="{{> formspree}}" method="POST" novalidate>
+          <div class="brief__card glass">
+            <p class="brief__sentence">{{> brief}}</p>
+          </div>
+          <!-- Spam trap: people never see or fill this -->
+          <input class="visually-hidden" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="brief__actions">
+            <button class="button mono" type="submit" data-magnetic>{{demo.submit}}</button>
+            <p class="brief__status" role="status"></p>
+          </div>
+        </form>
+
+        <div class="thanks" hidden>
+          <div class="thanks__bg"></div>
+          <div class="thanks__o">
+            <p class="thanks__text" tabindex="-1"></p>
+          </div>
+          <div class="fold glass" aria-hidden="true"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer mono">
+      <span>{{footer.copyright}}</span>
+      <a href="{{footer.privacyHref}}">{{footer.privacy}}</a>
+    </footer>
+
+    <a class="mobile-cta pill glass mono" href="#demo">{{nav.cta}}</a>
+
+    <div class="grain" aria-hidden="true"></div>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
