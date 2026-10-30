@@ -1,0 +1,167 @@
+/* The fixed stage behind the sections: light, cards, the O and the opening wordmark */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.card,
+.stage__o {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+/* Glass card, portrait 3:4 */
+.card {
+  width: var(--card-w, 120px);
+  height: calc(var(--card-w, 120px) * 4 / 3);
+  margin: calc(var(--card-w, 120px) * -2 / 3) 0 0 calc(var(--card-w, 120px) * -0.5);
+  border-radius: calc(var(--card-w, 120px) * 0.09);
+  opacity: 0;
+}
+
+/* A soft, card-specific sheen so each card catches the light differently */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--sheen-x) var(--sheen-y), rgba(255, 255, 255, 0.35), transparent 60%);
+  pointer-events: none;
+}
+
+.card__label {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 8%;
+  font-family: var(--font-mono);
+  font-size: clamp(7px, calc(var(--card-w, 120px) * 0.075), 9.5px);
+  line-height: 1.3;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.72;
+}
+
+/* The O, an SVG circle sized to the ring and scaled down to letter size at the start */
+.stage__o {
+  width: calc(var(--ring-r, 300px) * 2);
+  height: calc(var(--ring-r, 300px) * 2);
+  margin: calc(var(--ring-r, 300px) * -1) 0 0 calc(var(--ring-r, 300px) * -1);
+  overflow: visible;
+  opacity: 0;
+}
+.stage__o circle {
+  fill: none;
+  stroke: var(--ink);
+}
+
+/* The opening wordmark. The O is a placeholder that only reserves space: the visible
+   O is the SVG circle above, so it can grow into the ring. */
+.wordmark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  font-size: var(--size-display);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.wordmark > span {
+  display: inline-block;
+}
+.wordmark__o {
+  width: 0.76em;
+  height: 0.76em;
+  margin: 0 0.04em 0 0.05em;
+}
+
+/* The YOUR IDEA card and its stack (Section 3) */
+.idea__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--idea-w, 260px);
+  height: calc(var(--idea-w, 260px) * 4 / 3);
+  margin: calc(var(--idea-w, 260px) * -2 / 3) 0 0 calc(var(--idea-w, 260px) * -0.5);
+  border-radius: calc(var(--idea-w, 260px) * 0.07);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.idea__tint {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+}
+
+.idea__label {
+  position: absolute;
+  left: 9%;
+  top: 8%;
+  font-family: var(--font-mono);
+  font-size: clamp(9px, calc(var(--idea-w, 260px) * 0.042), 11px);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* The LOCI circle: in exactly the same place on every card (see circleOnCard) */
+.idea__o,
+.portal {
+  width: var(--portal-d, 44px);
+  height: var(--portal-d, 44px);
+  border-radius: 50%;
+}
+.idea__o {
+  position: absolute;
+  left: calc(77% - var(--portal-d, 44px) / 2);
+  top: calc(19% - var(--portal-d, 44px) / 2);
+}
+
+.portal {
+  position: absolute;
+  z-index: 4000; /* above the cards, the stack and the takeover */
+  left: 50%;
+  top: 50%;
+  margin: calc(var(--portal-d, 44px) * -0.5) 0 0 calc(var(--portal-d, 44px) * -0.5);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* The circle keeps the hairline of the opening O, so the thread stays readable */
+.idea__o,
+.portal {
+  box-shadow:
+    inset 0 0 0 1px rgba(38, 34, 31, 0.32),
+    inset 0 1px 0 0 var(--glass-highlight),
+    0 6px 16px -8px rgba(38, 34, 31, 0.25);
+}
+
+/* The only moment of colour: the LOCI gradient, revealed through a growing circle */
+.takeover {
+  position: absolute;
+  inset: 0;
+  z-index: 3999; /* above the cards (labelled ones sit near 1500), just under the portal */
+  background: var(--gradient);
+  clip-path: circle(0 at 50% 50%);
+  visibility: hidden;
+  will-change: clip-path;
+}
