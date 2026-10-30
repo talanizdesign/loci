@@ -1,0 +1,198 @@
+/* Elements present throughout: top bar, pills, glass cursor, mobile button */
+
+/* Small glass pill */
+.pill {
+  display: inline-block;
+  padding: 0.75em 1.3em;
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* --- Top bar: fixed, no background --- */
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: var(--space-3) var(--gutter);
+  color: var(--ink);
+  pointer-events: none;
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out),
+    color 0.6s var(--ease-out);
+}
+/* With scripts, the bar waits for the opening to finish; without, it simply shows */
+.js .topbar:not(.is-ready) {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.topbar > * {
+  pointer-events: auto;
+}
+
+/* The small wordmark. The O is its own circle so it can be swapped for an SVG logo. */
+.logo {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: inherit;
+  text-decoration: none;
+}
+.logo__o {
+  width: 0.76em;
+  height: 0.76em;
+  margin: 0 0.04em 0 0.05em;
+  border: 0.105em solid currentColor;
+  border-radius: 50%;
+}
+
+.topbar__nav ol {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.topbar__nav li + li::before {
+  content: '·';
+  padding: 0 0.9em;
+  color: var(--muted-strong);
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+}
+.topbar__nav a {
+  color: var(--muted-strong);
+  text-decoration: none;
+  transition: color 0.6s var(--ease-out);
+}
+.topbar__nav a:hover,
+.topbar__nav a.is-active {
+  color: var(--ink);
+}
+
+.topbar__cta {
+  justify-self: end;
+  transition: color 0.6s var(--ease-out), background-color 0.6s var(--ease-out);
+}
+
+/* Over the dark part of the gradient, the bar turns off-white */
+.on-dark .topbar {
+  color: var(--on-dark);
+}
+.on-dark .topbar__nav a,
+.on-dark .topbar__nav li + li::before {
+  color: rgba(245, 243, 238, 0.7);
+}
+.on-dark .topbar__nav a:hover,
+.on-dark .topbar__nav a.is-active {
+  color: var(--on-dark);
+}
+.on-dark .topbar__cta {
+  color: var(--on-dark);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 767px) {
+  .topbar {
+    grid-template-columns: 1fr 1fr;
+    padding-top: var(--space-2);
+  }
+  .topbar__nav {
+    display: none;
+  }
+}
+
+/* --- Cursor (fine pointers only) --- */
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+.has-cursor input,
+.has-cursor textarea {
+  cursor: text !important;
+}
+
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 95;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Dark slate with a thin white outline, so it stays visible over glass and light */
+.cursor__dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--canyon);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.95);
+  transition:
+    transform 0.7s var(--ease-out),
+    opacity 0.5s var(--ease-out),
+    background-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+}
+
+.cursor[data-state='hidden'] .cursor__dot {
+  transform: scale(0);
+  opacity: 0;
+}
+.cursor[data-state='link'] .cursor__dot {
+  transform: scale(1.7);
+  opacity: 0.6;
+}
+
+/* Over the dark gradient: off-white with a thin dark outline */
+.on-dark .cursor__dot {
+  background: var(--on-dark);
+  box-shadow: 0 0 0 1.5px rgba(38, 34, 31, 0.85);
+}
+
+/* --- Mobile and touch: a fixed glass button at the bottom centre --- */
+.mobile-cta {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  z-index: 60;
+  padding: 1em 1.8em;
+  background: rgba(255, 255, 255, 0.62);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 16px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out),
+    color 0.6s var(--ease-out),
+    background-color 0.6s var(--ease-out);
+}
+.mobile-cta.is-ready {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.mobile-cta.is-ready.is-away,
+.is-done .mobile-cta {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 16px);
+}
+.on-dark .mobile-cta {
+  color: var(--on-dark);
+  /* Tinted glass, so the text stays readable over the lighter foot of the gradient */
+  background: rgba(60, 26, 24, 0.34);
+}
